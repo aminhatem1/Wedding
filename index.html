@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف إلكترونية ملكية</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital@1&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold-color: #b59410;   /* ذهبي ناعم متناسق */
+            --text-dark: #2c3e50;    /* لون نصوص داكن لتباين مريح */
+            --theme-green: #5a7350;  /* الأخضر العشبي المستوحى من ورد الفيديو */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f7fa;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ----------------------------------
+           قسم الظرف التفاعلي ثلاثي الأبعاد
+        ---------------------------------- */
+        .envelope-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #f4f8fb 0%, #e1ecf5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s;
+            perspective: 1000px;
+        }
+
+        .envelope-container.fade-out {
+            transform: translateY(100vh);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope {
+            position: relative;
+            width: 340px;
+            height: 230px;
+            background-color: #edf3f8;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 170px solid #ffffff;
+            border-right: 170px solid #ffffff;
+            border-top: 115px solid transparent;
+            z-index: 2;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 125px solid #f7fbfd;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3;
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.05));
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 100px;
+            left: 135px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #e6ca65 0%, #a6841c 100%);
+            border-radius: 50%;
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 6px 15px rgba(166, 132, 28, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
+            border: 2px solid #bda039;
+            transition: all 0.4s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .wax-seal::before {
+            content: '❤';
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .envelope.open .wax-seal {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: #7da0bd;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* ----------------------------------
+           تنسيق صفحة الدعوة المتناسقة مع ألوان الفيديو
+        ---------------------------------- */
+        .main-card {
+            max-width: 430px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #e1eefb 0%, #f4f8fb 25%, #ffffff 60%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding: 25px 0;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        /* تأثير الغيوم المتحركة الهادئة */
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 140px;
+            background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;
+            opacity: 0.35;
+            animation: moveClouds 65s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes moveClouds {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; }
+        }
+
+        /* حاوية الفيديو المدمج (9:16) */
+        .video-section-container {
+            width: 90%;
+            max-width: 380px;
+            margin: 20px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(90, 115, 80, 0.15);
+            background-color: #ffffff;
+            aspect-ratio: 9 / 16;
+            position: relative;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .wedding-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--theme-green);
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+
+        .main-title {
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            margin-top: 0;
+            color: #43543d;
+            font-style: italic;
+        }
+
+        .names-display {
+            font-family: 'Amiri', serif;
+            font-size: 44px;
+            margin: 15px 0;
+            color: var(--theme-green);
+            font-weight: bold;
+        }
+
+        .names-display span {
+            display: block;
+            font-size: 24px;
+            color: var(--gold-color);
+            margin: 2px 0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: normal;
+        }
+
+        .date-display {
+            font-size: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+
+        .divider {
+            width: 85px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold-color), transparent);
+            margin: 25px auto;
+        }
+
+        /* العداد التنازلي */
+        .countdown-section p {
+            font-size: 14px;
+            color: #556650;
+            margin-bottom: 12px;
+        }
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .timer-box {
+            background: #ffffff;
+            border: 1px solid rgba(90, 115, 80, 0.1);
+            padding: 12px 0;
+            width: 76px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+        }
+        .timer-box cubic {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--theme-green);
+        }
+        .timer-box label {
+            display: block;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 3px;
+        }
+
+        /* برنامج الحفل */
+        .timeline-title {
+            color: var(--theme-green);
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .event-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 20px;
+            border-bottom: 1px solid rgba(90, 115, 80, 0.06);
+            font-size: 14px;
+            color: #555;
+        }
+        .event-row .time-stamp {
+            font-weight: bold;
+            color: var(--gold-color);
+            font-size: 15px;
+        }
+
+        /* ----------------------------------
+           قسم موقع الزفاف الجديد (بديل Dress Code)
+        ---------------------------------- */
+        .location-section {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+        
+        .location-icon {
+            font-size: 36px;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .location-text {
+            font-size: 14px;
+            color: #666;
+            margin: 5px auto 20px auto;
+            font-weight: bold;
+        }
+
+        .map-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--theme-green);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(90, 115, 80, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .map-button:hover {
+            background-color: #43543d;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(90, 115, 80, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope" id="weddingEnvelope">
+            <div class="envelope-flap"></div>
+            <div class="wax-seal"></div>
+            <div class="click-hint">اضغط لفتح الدعوة</div>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div class="wedding-label">Wedding Invitation</div>
+        <h2 class="main-title">دعوة زفاف</h2>
+        
+        <div class="video-section-container">
+            <video id="weddingVideo" loop playsinline>
+                <source src="E574BF40-47FA-4D3B-9D47-A6B729F9219C.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل هذا الفيديو.
+            </video>
+        </div>
+
+        <div class="names-display">
+            أمين
+            <span>&</span>
+            آلاء
+        </div>
+
+        <div class="date-display">22 . 11 . 2026</div>
+
+        <div class="divider"></div>
+
+        <div class="countdown-section">
+            <p>متبقي على يومنا المنتظر</p>
+            <div class="timer-grid">
+                <div class="timer-box"><cubic id="days">00</cubic><label>أيام</label></div>
+                <div class="timer-box"><cubic id="hours">00</cubic><label>ساعات</label></div>
+                <div class="timer-box"><cubic id="minutes">00</cubic><label>دقائق</label></div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="timeline">
+            <h3 class="timeline-title">برنامج حفلنا</h3>
+            <div class="event-row"><span class="time-stamp">20:00</span><span>استقبال الضيوف الكرام بـ قاعة الملكة</span></div>
+            <div class="event-row"><span class="time-stamp">21:00</span><span>بدء مراسم الزفاف الفاخرة</span></div>
+            <div class="event-row"><span class="time-stamp">22:30</span><span>تقديم وجبة العشاء والضيافة</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="location-section">
+            <h3 class="timeline-title">موقع حفل الزفاف</h3>
+            <div class="location-icon">📍</div>
+            <div class="location-text">قاعة الملكة - دار المدفعية</div>
+            
+            <a href="https://maps.app.goo.gl/Bw18pAc6WytfPDHz8?g_st=ic" target="_blank" class="map-button">
+                🗺️ الانتقال إلى موقع الحفل عبر خرائط جوجل
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('weddingEnvelope');
+        const container = document.getElementById('envelopeContainer');
+        const video = document.getElementById('weddingVideo');
+
+        // أنيميشن فتح الظرف وتشغيل الفيديو
+        envelope.addEventListener('click', () => {
+            envelope.classList.add('open');
+            
+            video.play().catch(error => {
+                console.log("تم تقييد التشغيل التلقائي من المتصفح:", error);
+            });
+
+            setTimeout(() => {
+                container.classList.add('fade-out');
+            }, 750);
+        });
+
+        // تشغيل العداد التنازلي التلقائي لعام 2026
+        const targetDate = new Date("November 22, 2026 20:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) return;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
