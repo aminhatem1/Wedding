@@ -11,9 +11,9 @@
     
     <style>
         :root {
-            --gold-color: #b59410;   /* ذهبي ناعم متناسق */
-            --text-dark: #2c3e50;    /* لون نصوص داكن لتباين مريح */
-            --theme-green: #5a7350;  /* الأخضر العشبي المستوحى من ورد الفيديو */
+            --gold-color: #b59410;   
+            --text-dark: #2c3e50;    
+            --theme-green: #5a7350;  
         }
 
         body {
@@ -155,7 +155,6 @@
             position: relative;
         }
 
-        /* تأثير الغيوم المتحركة الهادئة */
         .main-card::before {
             content: '';
             position: absolute;
@@ -191,7 +190,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none;
         }
 
         .wedding-label {
@@ -296,9 +294,7 @@
             font-size: 15px;
         }
 
-        /* ----------------------------------
-           قسم موقع الزفاف الجديد (بديل Dress Code)
-        ---------------------------------- */
+        /* قسم موقع الزفاف */
         .location-section {
             padding: 0 20px;
             margin-bottom: 20px;
@@ -362,8 +358,8 @@
         <h2 class="main-title">دعوة زفاف</h2>
         
         <div class="video-section-container">
-            <video id="weddingVideo" loop playsinline>
-                <source src="E574BF40-47FA-4D3B-9D47-A6B729F9219C.mp4" type="video/mp4">
+            <video id="weddingVideo" loop muted playsinline>
+                <source src="wedding-video.mp4" type="video/mp4">
                 متصفحك لا يدعم تشغيل هذا الفيديو.
             </video>
         </div>
@@ -414,12 +410,12 @@
         const container = document.getElementById('envelopeContainer');
         const video = document.getElementById('weddingVideo');
 
-        // أنيميشن فتح الظرف وتشغيل الفيديو
         envelope.addEventListener('click', () => {
             envelope.classList.add('open');
             
+            // تشغيل آمن وموثوق للمتصفحات
             video.play().catch(error => {
-                console.log("تم تقييد التشغيل التلقائي من المتصفح:", error);
+                console.log("تم تقييد التشغيل التلقائي:", error);
             });
 
             setTimeout(() => {
@@ -427,7 +423,7 @@
             }, 750);
         });
 
-        // تشغيل العداد التنازلي التلقائي لعام 2026
+        // العداد التنازلي لعام 2026
         const targetDate = new Date("November 22, 2026 20:00:00").getTime();
 
         function updateCountdown() {
