@@ -250,19 +250,19 @@
         .timer-grid {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
         }
         .timer-box {
             background: #ffffff;
             border: 1px solid rgba(90, 115, 80, 0.1);
-            padding: 12px 0;
-            width: 76px;
+            padding: 10px 0;
+            width: 68px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.01);
         }
         .timer-box cubic {
             display: block;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--theme-green);
         }
@@ -294,29 +294,58 @@
             font-size: 15px;
         }
 
-        /* قسم موقع الزفاف */
+        /* قسم خريطة جوجل التفاعلية */
         .location-section {
             padding: 0 20px;
             margin-bottom: 20px;
         }
         
-        .location-icon {
-            font-size: 36px;
-            color: var(--gold-color);
-            margin-bottom: 5px;
-            display: inline-block;
-            animation: bounce 2s infinite;
+        .map-icon-container {
+            width: 70px;
+            height: 70px;
+            margin: 10px auto;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            animation: pulseMap 2.5s infinite;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+        .google-map-icon {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #4285F4 30%, #34A853 60%, #FBBC05 90%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .google-map-icon::after {
+            content: '📍';
+            font-size: 20px;
+            position: absolute;
+            top: -6px;
+        }
+
+        @keyframes pulseMap {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(181, 148, 16, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(181, 148, 16, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(181, 148, 16, 0); }
         }
 
         .location-text {
             font-size: 14px;
             color: #666;
-            margin: 5px auto 20px auto;
+            margin: 8px auto 20px auto;
             font-weight: bold;
         }
 
@@ -358,8 +387,8 @@
         <h2 class="main-title">دعوة زفاف</h2>
         
         <div class="video-section-container">
-            <video id="weddingVideo" loop muted playsinline>
-                <source src="wedding-video.MP4" type="video/mp4">
+            <video id="weddingVideo" loop muted playsinline preload="auto">
+                <source src="wedding-video.mp4" type="video/mp4">
                 متصفحك لا يدعم تشغيل هذا الفيديو.
             </video>
         </div>
@@ -370,7 +399,7 @@
             آلاء
         </div>
 
-        <div class="date-display">22 . 11 . 2026</div>
+        <div class="date-display">22 . 09 . 2026</div>
 
         <div class="divider"></div>
 
@@ -380,6 +409,7 @@
                 <div class="timer-box"><cubic id="days">00</cubic><label>أيام</label></div>
                 <div class="timer-box"><cubic id="hours">00</cubic><label>ساعات</label></div>
                 <div class="timer-box"><cubic id="minutes">00</cubic><label>دقائق</label></div>
+                <div class="timer-box"><cubic id="seconds">00</cubic><label>ثواني</label></div>
             </div>
         </div>
 
@@ -396,11 +426,15 @@
 
         <div class="location-section">
             <h3 class="timeline-title">موقع حفل الزفاف</h3>
-            <div class="location-icon">📍</div>
+            
+            <div class="map-icon-container" onclick="window.open('https://maps.google.com/?q=دار+المدفعية+قاعة+الملكة', '_blank')">
+                <div class="google-map-icon"></div>
+            </div>
+            
             <div class="location-text">قاعة الملكة - دار المدفعية</div>
             
-            <a href="https://maps.app.goo.gl/Bw18pAc6WytfPDHz8?g_st=ic" target="_blank" class="map-button">
-                🗺️ الانتقال إلى موقع الحفل عبر خرائط جوجل
+            <a href="https://maps.google.com/?q=دار+المدفعية+قاعة+الملكة" target="_blank" class="map-button">
+                🗺️ فتح الموقع عبر تطبيق خريطة Google
             </a>
         </div>
     </div>
@@ -413,32 +447,50 @@
         envelope.addEventListener('click', () => {
             envelope.classList.add('open');
             
-            // تشغيل آمن وموثوق للمتصفحات
-            video.play().catch(error => {
-                console.log("تم تقييد التشغيل التلقائي:", error);
-            });
+            video.load();
+            var playPromise = video.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("بدأ تشغيل الفيديو بنجاح.");
+                }).catch(error => {
+                    console.log("فشل التشغيل التلقائي المبدئي، محاولة أخرى صامتة:", error);
+                    video.muted = true;
+                    video.play();
+                });
+            }
 
             setTimeout(() => {
                 container.classList.add('fade-out');
             }, 750);
         });
 
-        // العداد التنازلي لعام 2026
-        const targetDate = new Date("November 22, 2026 20:00:00").getTime();
+        // ----------------------------------
+        // العداد التنازلي المحدث بدقة لتاريخ 22 سبتمبر 2026
+        // ----------------------------------
+        const targetDate = new Date("September 22, 2026 20:00:00").getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = targetDate - now;
 
-            if (diff <= 0) return;
+            if (diff <= 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
 
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
             document.getElementById('days').innerText = d < 10 ? '0' + d : d;
             document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
             document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
         }
 
         setInterval(updateCountdown, 1000);
