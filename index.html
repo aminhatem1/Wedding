@@ -13,19 +13,21 @@
         :root {
             --gold-color: #b59410;   
             --text-dark: #2c3e50;    
-            --theme-green: #5a7350;  
+            --theme-green: #a3b899;  /* اللون الأخضر الهادئ المطابق للفيديو */
+            --theme-green-dark: #8da183;
+            --seal-color: #fcfbfa;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #f3f7fa;
+            background-color: #f4f7f5;
             -webkit-tap-highlight-color: transparent;
         }
 
         /* ----------------------------------
-           قسم الظرف التفاعلي ثلاثي الأبعاد
+           قسم الظرف التفاعلي المطور ثلاثي الأبعاد
         ---------------------------------- */
         .envelope-container {
             position: fixed;
@@ -33,7 +35,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #f4f8fb 0%, #e1ecf5 100%);
+            background: linear-gradient(135deg, #f4f7f5 0%, #e3eae0 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,7 +45,7 @@
         }
 
         .envelope-container.fade-out {
-            transform: translateY(100vh);
+            transform: translateY(-100vh); /* يصعد لأعلى بسلاسة مثل حركة الفيديو */
             opacity: 0;
             pointer-events: none;
         }
@@ -52,11 +54,22 @@
             position: relative;
             width: 340px;
             height: 230px;
-            background-color: #edf3f8;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            background-color: var(--theme-green-dark);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
             transform-style: preserve-3d;
             cursor: pointer;
+        }
+
+        /* الخلفية المنقوشة للظرف محاكاة للفيديو */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 12px 12px;
+            opacity: 0.4;
+            z-index: 1;
         }
 
         .envelope::after {
@@ -66,8 +79,8 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 170px solid #ffffff;
-            border-right: 170px solid #ffffff;
+            border-left: 170px solid var(--theme-green);
+            border-right: 170px solid var(--theme-green);
             border-top: 115px solid transparent;
             z-index: 2;
             border-radius: 0 0 4px 4px;
@@ -81,11 +94,11 @@
             height: 0;
             border-left: 170px solid transparent;
             border-right: 170px solid transparent;
-            border-top: 125px solid #f7fbfd;
+            border-top: 125px solid var(--theme-green);
             transform-origin: top;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 3;
-            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.05));
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.1));
         }
 
         .envelope.open .envelope-flap {
@@ -93,33 +106,37 @@
             z-index: 1;
         }
 
+        /* الختم الشمعي الكريمي الفاخر بمنتصف الظرف */
         .wax-seal {
             position: absolute;
-            top: 100px;
+            top: 90px;
             left: 135px;
             width: 70px;
             height: 70px;
-            background: radial-gradient(circle, #e6ca65 0%, #a6841c 100%);
+            background: radial-gradient(circle, #ffffff 0%, #f4f1ea 100%);
             border-radius: 50%;
             z-index: 4;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 6px 15px rgba(166, 132, 28, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
-            border: 2px solid #bda039;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255,255,255,0.6);
+            border: 2px dashed #d1cbd4;
             transition: all 0.4s ease;
             animation: pulse 2s infinite;
         }
 
         .wax-seal::before {
-            content: '❤';
-            color: #fff;
-            font-size: 24px;
+            content: 'أ & آ'; /* الحروف الأولى للعروسين بشكل ملكي */
+            color: var(--theme-green-dark);
+            font-family: 'Amiri', serif;
+            font-weight: bold;
+            font-size: 20px;
         }
 
         .envelope.open .wax-seal {
             opacity: 0;
             transform: scale(0.5);
+            pointer-events: none;
         }
 
         @keyframes pulse {
@@ -130,22 +147,22 @@
 
         .click-hint {
             position: absolute;
-            bottom: -40px;
+            bottom: -45px;
             width: 100%;
             text-align: center;
-            color: #7da0bd;
-            font-size: 13px;
+            color: #6d8264;
+            font-size: 14px;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         /* ----------------------------------
-           تنسيق صفحة الدعوة المتناسقة مع ألوان الفيديو
+           تنسيق صفحة الدعوة الرئيسية
         ---------------------------------- */
         .main-card {
             max-width: 430px;
             margin: 0 auto;
-            background: linear-gradient(to bottom, #e1eefb 0%, #f4f8fb 25%, #ffffff 60%);
+            background: linear-gradient(to bottom, #f4f7f5 0%, #ffffff 20%);
             color: var(--text-dark);
             min-height: 100vh;
             box-sizing: border-box;
@@ -155,30 +172,11 @@
             position: relative;
         }
 
-        .main-card::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            height: 140px;
-            background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;
-            opacity: 0.35;
-            animation: moveClouds 65s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes moveClouds {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 0; }
-        }
-
         /* حاوية الفيديو المدمج (9:16) */
         .video-section-container {
-            width: 100%;
-            max-width: 100%;
-            margin: 0px auto;
-            border-radius: 0px;
+            width: 90%;
+            margin: 0px auto 20px auto;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 12px 30px rgba(90, 115, 80, 0.15);
             background-color: #ffffff;
@@ -196,7 +194,7 @@
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: var(--theme-green);
+            color: var(--theme-green-dark);
             margin-bottom: 3px;
             font-weight: bold;
         }
@@ -209,21 +207,40 @@
             font-style: italic;
         }
 
+        /* إطار عرض الأسماء مع الإيموجي والمؤثرات المطلوبة */
+        .names-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
         .names-display {
             font-family: 'Amiri', serif;
             font-size: 44px;
-            margin: 15px 0;
-            color: var(--theme-green);
+            color: var(--theme-green-dark);
             font-weight: bold;
+            margin: 0;
         }
 
         .names-display span {
-            display: block;
             font-size: 24px;
             color: var(--gold-color);
-            margin: 2px 0;
+            margin: 0 8px;
             font-family: 'Cairo', sans-serif;
             font-weight: normal;
+        }
+
+        .emoji-sparkle {
+            font-size: 24px;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         .date-display {
@@ -264,7 +281,7 @@
             display: block;
             font-size: 20px;
             font-weight: 700;
-            color: var(--theme-green);
+            color: var(--theme-green-dark);
         }
         .timer-box label {
             display: block;
@@ -275,7 +292,7 @@
 
         /* برنامج الحفل */
         .timeline-title {
-            color: var(--theme-green);
+            color: var(--theme-green-dark);
             font-size: 18px;
             margin-bottom: 15px;
         }
@@ -294,58 +311,34 @@
             font-size: 15px;
         }
 
-        /* قسم خريطة جوجل التفاعلية */
+        /* ----------------------------------
+           قسم الخريطة التفاعلية المباشرة المضافة
+        ---------------------------------- */
         .location-section {
             padding: 0 20px;
             margin-bottom: 20px;
         }
-        
-        .map-icon-container {
-            width: 70px;
-            height: 70px;
-            margin: 10px auto;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            cursor: pointer;
-            animation: pulseMap 2.5s infinite;
+
+        .map-wrapper {
+            width: 100%;
+            height: 230px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+            border: 1px solid rgba(90, 115, 80, 0.1);
+            margin: 15px 0;
         }
 
-        .google-map-icon {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, #4285F4 30%, #34A853 60%, #FBBC05 90%);
-            border-radius: 8px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        }
-
-        .google-map-icon::after {
-            content: '📍';
-            font-size: 20px;
-            position: absolute;
-            top: -6px;
-        }
-
-        @keyframes pulseMap {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(181, 148, 16, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(181, 148, 16, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(181, 148, 16, 0); }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .location-text {
-            font-size: 14px;
-            color: #666;
-            margin: 8px auto 20px auto;
+            font-size: 15px;
+            color: #444;
+            margin: 12px auto;
             font-weight: bold;
         }
 
@@ -354,21 +347,20 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background-color: var(--theme-green);
+            background-color: var(--theme-green-dark);
             color: #ffffff;
             text-decoration: none;
             padding: 12px 25px;
             border-radius: 30px;
             font-size: 14px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(90, 115, 80, 0.3);
+            box-shadow: 0 5px 15px rgba(90, 115, 80, 0.2);
             transition: all 0.3s ease;
         }
 
         .map-button:hover {
-            background-color: #43543d;
+            background-color: #6d8264;
             transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(90, 115, 80, 0.4);
         }
     </style>
 </head>
@@ -378,7 +370,7 @@
         <div class="envelope" id="weddingEnvelope">
             <div class="envelope-flap"></div>
             <div class="wax-seal"></div>
-            <div class="click-hint">اضغط لفتح الدعوة</div>
+            <div class="click-hint">اضغط لفتح ظرف الدعوة ✨</div>
         </div>
     </div>
 
@@ -393,10 +385,14 @@
             </video>
         </div>
 
-        <div class="names-display">
-            أمين
-            <span>&</span>
-            آلاء
+        <div class="names-container">
+            <span class="emoji-sparkle">✦</span>
+            <div class="names-display">
+                أمين
+                <span>&</span>
+                آلاء
+            </div>
+            <span class="emoji-sparkle">✨</span>
         </div>
 
         <div class="date-display">22 . 09 . 2026</div>
@@ -427,14 +423,19 @@
         <div class="location-section">
             <h3 class="timeline-title">موقع حفل الزفاف</h3>
             
-            <div class="map-icon-container" onclick="window.open('https://maps.google.com/?q=دار+المدفعية+قاعة+الملكة', '_blank')">
-                <div class="google-map-icon"></div>
+            <div class="location-text">📍 قاعة الملكة - دار المدفعية (القاهرة)</div>
+
+            <div class="map-wrapper">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.4411130638535!2d31.3414995!3d30.0815598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14581609d6c4133b%3A0x67399b9cf99c9ef6!2z2K_Yp9ixINin2YTZhdiv2YHYp9i52YrYqSAtINmC2KfYudinINin2YTZhdmE2g!5e0!3m2!1sar!2seg!4v1710000000000!5m2!1sar!2seg" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
             
-            <div class="location-text">قاعة الملكة - دار المدفعية</div>
-            
-            <a href="https://maps.google.com/?q=دار+المدفعية+قاعة+الملكة" target="_blank" class="map-button">
-                🗺️ فتح الموقع عبر تطبيق خريطة Google
+            <a href="https://maps.app.goo.gl/yq6ZpQp6g6Z8Q7S3A" target="_blank" class="map-button">
+                🗺️ توجيه عبر تطبيق Google Maps
             </a>
         </div>
     </div>
@@ -465,9 +466,7 @@
             }, 750);
         });
 
-        // ----------------------------------
         // العداد التنازلي المحدث بدقة لتاريخ 22 سبتمبر 2026
-        // ----------------------------------
         const targetDate = new Date("September 22, 2026 20:00:00").getTime();
 
         function updateCountdown() {
