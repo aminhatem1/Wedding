@@ -330,11 +330,17 @@
         }
 
         /* ----------------------------------
-           قسم الخريطة التفاعلية المباشرة المضافة
+           قسم الخريطة التفاعلية المباشرة
         ---------------------------------- */
         .location-section {
             padding: 0 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .map-link {
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
         }
 
         .map-wrapper {
@@ -345,6 +351,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.07);
             border: 1px solid rgba(90, 115, 80, 0.1);
             margin: 15px 0;
+            pointer-events: none; /* يمنع التفاعل الداخلي مع الخريطة ليتمكن المستخدم من الضغط على الرابط بسهولة */
         }
 
         .map-wrapper iframe {
@@ -358,27 +365,6 @@
             color: #444;
             margin: 12px auto;
             font-weight: bold;
-        }
-
-        .map-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: var(--theme-green-dark);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(90, 115, 80, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .map-button:hover {
-            background-color: #6d8264;
-            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -443,17 +429,16 @@
             
             <div class="location-text">📍 قاعة الملكة - دار المدفعية (القاهرة)</div>
 
-            <div class="map-wrapper">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.4411130638535!2d31.3414995!3d30.0815598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14581609d6c4133b%3A0x67399b9cf99c9ef6!2z2K_Yp9ixINin2YTZhdiv2YHYp9i52YrYqSAtINmC2KfYudinINin2YTZhdmE2g!5e0!3m2!1sar!2seg!4v1710000000000!5m2!1sar!2seg" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-            
-            <a href="https://maps.app.goo.gl/5SPSz2Dkg16jBauM9?g_st=ic" target="_blank" class="map-button">
-                🗺️ توجيه عبر تطبيق Google Maps
+            <!-- تم جعل الخريطة بأكملها رابطًا ينقل لخرائط جوجل وحذف الزر بالأسفل -->
+            <a href="https://maps.app.goo.gl/5SPSz2Dkg16jBauM9?g_st=ic" target="_blank" class="map-link">
+                <div class="map-wrapper">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.4411130638535!2d31.3414995!3d30.0815598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14581609d6c4133b%3A0x67399b9cf99c9ef6!2z2K_Yp9ixINin2YTZhdiv2YHYp9i52YrYqSAtINmC2KfYudinINin2YTZhdmE2g!5e0!3m2!1sar!2seg!4v1710000000000!5m2!1sar!2seg" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
             </a>
         </div>
     </div>
